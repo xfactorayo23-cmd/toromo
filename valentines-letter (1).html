@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 50%, #ffd4e8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts background */
+        .heart-bg {
+            position: fixed;
+            font-size: 20px;
+            color: rgba(255, 105, 180, 0.3);
+            animation: float 15s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        /* Envelope Container */
+        .envelope-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 70%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        .envelope {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Envelope parts */
+        .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9eb5 0%, #ffb3c6 100%);
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.4);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(135deg, #ffb3c6 0%, #ffc4d6 100%);
+            transform-origin: top center;
+            border-radius: 10px 10px 0 0;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.5s ease 0.3s;
+            z-index: 3;
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.3);
+        }
+
+        .envelope-flap::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 250px solid transparent;
+            border-right: 250px solid transparent;
+            border-top: 150px solid #ff9eb5;
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(-180deg);
+            opacity: 0;
+        }
+
+        .envelope-back {
+            transition: opacity 0.5s ease 0.3s;
+        }
+
+        .envelope.open .envelope-back {
+            opacity: 0;
+        }
+
+        /* Letter inside envelope */
+        .letter {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            background: #fffef7;
+            border-radius: 5px;
+            padding: 40px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.3);
+            overflow-y: auto;
+            pointer-events: none;
+        }
+
+        .envelope.open .letter {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+
+        .letter-content {
+            line-height: 1.8;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .letter-content p {
+            margin-bottom: 15px;
+        }
+
+        .signature {
+            margin-top: 30px;
+            text-align: right;
+            font-style: italic;
+            color: #ff1493;
+            font-size: 16px;
+        }
+
+        /* Slide instruction */
+        .slide-instruction {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ff1493;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            animation: pulse 2s infinite;
+            transition: opacity 0.5s ease;
+        }
+
+        .envelope.open .slide-instruction {
+            opacity: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .arrow {
+            display: block;
+            font-size: 24px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Heart seal on envelope */
+        .heart-seal {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            z-index: 4;
+            transition: all 0.5s ease;
+            filter: drop-shadow(0 3px 10px rgba(255, 20, 147, 0.5));
+        }
+
+        .envelope.open .heart-seal {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        /* Title */
+        .title {
+            text-align: center;
+            color: #ff1493;
+            font-size: 36px;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
+            animation: fadeInDown 1s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .letter-content {
+                font-size: 12px;
+            }
+            
+            .title {
+                font-size: 28px;
+            }
+
+            .letter {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div id="hearts-container"></div>
+
+    <div class="container">
+        <h1 class="title">Happy Valentine's Day ❤️</h1>
+        
+        <div class="envelope-container">
+            <div class="envelope-wrapper" onclick="openEnvelope()">
+                <div class="envelope" id="envelope">
+                    <div class="envelope-back"></div>
+                    
+                    <div class="letter">
+                        <div class="letter-content">
+                            <p>I've been writing you a lot of letters lately, and I know that at some point words can lose their impact. So while I'm always thinking of new ways to show how I feel, for now, accept this letter and the small Valentine's gift I got you.</p>
+                            
+                            <p>The four Polaroids you received mean a lot to me. Two of them are some of my favorite pictures of you, and the other two are my favorite moments of us. I chose them carefully, and I hope you take a moment to really look at them.</p>
+                            
+                            <p>Everything I give you, whether it's words or something small like this, always comes from the heart. I never take that lightly.</p>
+                            
+                            <p>Happy Valentine's Day. I do want to say I'm sorry for the times in the past when I didn't take it seriously with you. I'm actively changing that, and I hope this won't be our last Valentine's together. I care about you deeply — I always have — and I want that care to be something you can feel, not just hear.</p>
+                            
+                            <p>I know words aren't everything, which is why I'm trying to show up through my actions and the little things I do. I hope you notice them.</p>
+                            
+                            <p>One thing I want you to know is that when you need to talk, I'm always here. If you ever just want me to listen without fixing or commenting, I can do that — no questions asked. I want to understand you, I just don't want to be in the dark when it comes to you — or be blinded, cause if it was me I'll surely tell you.</p>
+                            
+                            <p>Even on my busiest days, when everything feels overwhelming, you're always on my mind. No matter the stress, I never forget to check in on the people I care about — especially you.</p>
+                            
+                            <p>I still believe in us and what we can be, and I'm never giving up and you should know by now I won't ever lie to you. I hope you feel the same 100% too.</p>
+                            
+                            <p>I really love you. Happy Valentine's Day.</p>
+                            
+                            <div class="signature">
+                                With all my love ❤️
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="envelope-flap"></div>
+                    <div class="heart-seal">❤️</div>
+                </div>
+                
+                <div class="slide-instruction" id="instruction">
+                    <span class="arrow">👆</span>
+                    Tap to open
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart-bg';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            document.getElementById('hearts-container').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 20000);
+        }
+
+        // Create hearts periodically
+        setInterval(createHeart, 1500);
+        
+        // Create initial hearts
+        for (let i = 0; i < 8; i++) {
+            setTimeout(createHeart, i * 300);
+        }
+
+        // Open envelope function
+        function openEnvelope() {
+            const envelope = document.getElementById('envelope');
+            envelope.classList.toggle('open');
+        }
+
+        // Allow keyboard interaction
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                openEnvelope();
+            }
+        });
+    </script>
+</body>
+</html>
